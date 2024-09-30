@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>バナナ熟度判定アプリ</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        text-align: center;
+      }
+      #uploadedImage {
+        max-width: 100%;
+        height: auto;
+        margin-top: 20px;
+      }
+      #result {
+        margin-top: 20px;
+        font-size: 18px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>バナナ熟度判定アプリ</h1>
+      <form id="uploadForm" enctype="multipart/form-data">
+        <input type="file" id="imageInput" accept="image/*" />
+        <button type="submit">結果</button>
+      </form>
+
+      <!-- アップロードした画像を表示する場所 -->
+      <img id="uploadedImage" style="display: none" />
+
+      <!-- 追熟度の結果を表示する場所 -->
+      <div id="result"></div>
+    </div>
+
+    <script>
+      document
+        .getElementById("uploadForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault();
+
+          const formData = new FormData();
+          const imageFile = document.getElementById("imageInput").files[0];
+          formData.append("image", imageFile);
+
+          // 画像をフロントエンドで表示
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            const uploadedImage = document.getElementById("uploadedImage");
+            uploadedImage.src = e.target.result;
+            uploadedImage.style.display = "block";
+          };
+          reader.readAsDataURL(imageFile);
+
+          // サーバーに画像を送信
+          fetch("/upload", {
+            method: "POST",
+            headers: {
+              // ヘッダー指定
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data), // 送信データをセット（ここでJSON形式に変換）
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              // サーバーからの応答（熟度の％）を表示
+              if (data.error) {
+                document.getElementById(
+                  "result"
+                ).textContent = `エラー: ${data.error}`;
+              } else {
+                document.getElementById(
+                  "result"
+                ).textContent = `熟度の判定: ${data.ripeness.toFixed(
+                  2
+                )}% (シュガースポット: ${
+                  data.sugar_spots
+                }, 色の強度: ${data.color_intensity.toFixed(2)})`;
+              }
+            })
+            .catch((error) => {
+              console.error("エラー:", error);
+              document.getElementById("result").textContent = "エラーが発生";
+            });
+        });
+    </script>
+  </body>
+</html>
