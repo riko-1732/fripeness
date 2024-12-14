@@ -1,1 +1,1 @@
-web: gunicorn app:app
+web: /opt/render/.python/bin/gunicorn app:app
