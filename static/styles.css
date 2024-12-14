@@ -4,7 +4,7 @@
 .file-label {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #4caf50;
+  background-color: #747474;
   color: white;
   font-size: 16px;
   border-radius: 5px;
@@ -14,13 +14,13 @@
 
 /* ボタンのホバー効果 */
 .file-label:hover {
-  background-color: #45a049;
+  background-color: #030303;
 }
 
 /* フォームのボタンのデザイン */
 button {
   padding: 10px 20px;
-  background-color: #2196f3;
+  background-color: #b6720c;
   color: white;
   font-size: 16px;
   border-radius: 5px;
@@ -31,5 +31,5 @@ button {
 
 /* ボタンのホバー効果 */
 button:hover {
-  background-color: #0b7dda;
+  background-color: #5e2c00;
 }
