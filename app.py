@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, redirect, url_for
+from waitress import serve  # waitressをインポート
 import os
 from utils.ripeness import read_img, banana_ripeness  # ripeness.pyから関数をインポート
 
@@ -50,4 +51,4 @@ def upload():
         return '許可されていないファイル形式です。', 400  # 不正なファイル形式の場合
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    serve(app, host='0.0.0.0', port=5000)
