@@ -1,0 +1,7 @@
+{
+  "appName": "fripeness",
+  "appId": "<your-app-id>",
+  "masterKey": "<your-master-key>",
+  "port": 1337,
+  "databaseURI": "<your-database-uri>"
+}

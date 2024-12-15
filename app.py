@@ -25,28 +25,29 @@ def index():
 
 @app.route('/upload', methods=['POST'])
 def upload():
-    if 'banana_image' not in request.files:
-        return redirect(request.url)  # ファイルが送信されていない場合、元のページにリダイレクト
+    if request.method == 'POST':
+        if 'banana_image' not in request.files:
+            return redirect(request.url)  # ファイルが送信されていない場合、元のページにリダイレクト
     
-    file = request.files['banana_image']
+        file = request.files['banana_image']
     
-    # ファイル名が適切でない場合
-    if file.filename == '':
-        return redirect(request.url)
+        # ファイル名が適切でない場合
+        if file.filename == '':
+            return redirect(request.url)
     
-    # ファイルが許可された形式か確認
-    if file and allowed_file(file.filename):
-        # ファイル名をセキュアにして保存
-        filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-        file.save(filename)
+        # ファイルが許可された形式か確認
+        if file and allowed_file(file.filename):
+            # ファイル名をセキュアにして保存
+            filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+            file.save(filename)
 
-        # 画像を読み込んで追熟度を計算
-        image = read_img(filename)  # read_imgで画像を読み込む
-        ripeness = banana_ripeness(image)  # 追熟度を計算
+            # 画像を読み込んで追熟度を計算
+            image = read_img(filename)  # read_imgで画像を読み込む
+            ripeness = banana_ripeness(image)  # 追熟度を計算
 
-        return render_template('result.html', ripeness=ripeness)  # 結果ページにリダイレクト
+            return render_template('result.html', ripeness=ripeness)  # 結果ページにリダイレクト
     
-    return '許可されていないファイル形式です。', 400  # 不正なファイル形式の場合
+        return '許可されていないファイル形式です。', 400  # 不正なファイル形式の場合
 
 if __name__ == '__main__':
-    app.run(debug=True)  # アプリケーションをデバッグモードで実行
+    app.run(debug=True)

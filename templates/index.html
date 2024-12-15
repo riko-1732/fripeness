@@ -3,11 +3,22 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Banana Ripeness Checker</title>
+    <title>fripeness</title>
     <link rel="stylesheet" href="../static/styles.css" type="text/css" />
   </head>
+
   <body>
-    <h1>Banana Ripeness Checker</h1>
+    <header>
+      <h1>
+        <a>
+          <img src="../static/fripeness_logo." alt="logo" />
+        </a>
+      </h1>
+    </header>
+    <h2>fripeness</h2>
+    <h3>
+      Upload an image of a banana and the degree of ripeness will be displayed!
+    </h3>
     <form action="/upload" method="POST" enctype="multipart/form-data">
       <!-- 実際のファイル選択ボタンを非表示にする -->
       <input
@@ -22,7 +33,14 @@
       <!-- カスタムボタン -->
       <label for="fileInput" class="file-label">Select Banana Image</label>
 
-      <button type="submit">Check Ripeness</button>
+      <div id="preview" style="margin: 20px 0; text-align: center">
+        <!-- プレビュー画像がここに表示される -->
+      </div>
+
+      <button type="submit">Check Ripeness!</button>
     </form>
+
+    <!-- JavaScript -->
+    <script src="../static/preview.jsx"></script>
   </body>
 </html>
