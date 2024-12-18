@@ -11,15 +11,16 @@
     <header>
       <h1>
         <a>
-          <img src="../static/fripeness_logo.jpg" alt="logo" />
+          <img src="../static/fripeness_logo.png" alt="logo" />
         </a>
       </h1>
     </header>
-    <h2>fripeness</h2>
+
     <h3>
       Upload an image of a banana and the degree of ripeness will be displayed!
     </h3>
-    <form action="/upload" method="POST" enctype="multipart/form-data">
+
+    <form action="/loading" method="POST" enctype="multipart/form-data">
       <!-- 実際のファイル選択ボタンを非表示にする -->
       <input
         type="file"
@@ -42,5 +43,19 @@
 
     <!-- JavaScript -->
     <script src="../static/preview.jsx"></script>
+
+    <!-- JavaScript -->
+    <script>
+      // フォーム送信時にローディング画面を表示してから実際にフォームを送信
+      document
+        .querySelector("#uploadForm")
+        .addEventListener("submit", function (e) {
+          // e.preventDefault(); // デフォルトのフォーム送信を防止
+          window.location.href = "/templates/loading.html"; // 一時的にローディング画面に遷移
+          setTimeout(() => {
+            this.submit(); // 3秒後に実際のフォーム送信を実行
+          }, 3000);
+        });
+    </script>
   </body>
 </html>

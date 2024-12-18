@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fripeness</title>
+    <link rel="stylesheet" href="../static/styles.css" type="text/css" />
+    <script>
+      // 一定時間後にresult.htmlに遷移
+      window.onload = () => {
+        setTimeout(() => {
+          const filename = "{{ filename }}"; // Flaskから渡されたファイル名
+          window.location.href = `/result/${filename}`;
+        }, 1000); // 1秒待機
+      };
+    </script>
+  </head>
+  <body>
+    <header>
+      <h1>
+        <a href="/">
+          <img src="../static/fripeness_logo.png" width="100%" alt="logo" />
+        </a>
+      </h1>
+    </header>
+    <div id="loading-screen">
+      <img id="banana-image" src="../static/banana.jpg" alt="Loading Banana" />
+      <div id="loading-bar-container">
+        <div id="loading-bar"></div>
+      </div>
+    </div>
+  </body>
+</html>

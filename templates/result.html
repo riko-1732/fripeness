@@ -4,25 +4,37 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>fripeness</title>
+    <link rel="stylesheet" href="../static/styles.css" type="text/css" />
   </head>
+
   <body>
     <header>
       <h1>
         <a href="/">
-          <img src="../static/fripeness_logo.jpg" width="100%" alt="logo" />
+          <img src="../static/fripeness_logo.png" width="100%" alt="logo" />
         </a>
       </h1>
     </header>
-    <h2>fripeness</h2>
-    <p>The ripeness of this banana is: {{ ripeness }}%</p>
 
+    <h3>The ripeness of this banana is</h3>
+    <h4>{{ ripeness }}%</h4>
+
+    <!-- アップロードされた画像を表示 -->
     <div id="preview" style="margin: 20px 0; text-align: center">
-      <!-- プレビュー画像がここに表示される -->
+      <img
+        src="{{ uploaded_image }}"
+        alt="Uploaded Banana Image"
+        style="
+          max-width: 30%;
+          height: auto;
+          border: 1px solid #ddd;
+          border-radius: 10px;
+          padding: 10px;
+        "
+      />
     </div>
+    <button onclick="window.location.href='/'">Return</button>
 
-    <a href="/">Return</a>
-
-    <!-- JavaScript -->
     <script src="../static/preview.jsx"></script>
   </body>
 </html>

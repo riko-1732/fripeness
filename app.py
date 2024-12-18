@@ -1,12 +1,11 @@
 from flask import Flask, render_template, request, redirect, url_for
-from waitress import serve  # waitressをインポート
 import os
 from utils.ripeness import read_img, banana_ripeness  # ripeness.pyから関数をインポート
 
 app = Flask(__name__)
 
 # アップロードされた画像の保存先ディレクトリ
-UPLOAD_FOLDER = 'upload'  # フォルダ名を統一
+UPLOAD_FOLDER = os.path.join('static', 'upload')  # staticディレクトリ内のuploadフォルダ
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 # 保存先ディレクトリが存在しない場合は作成する
@@ -24,31 +23,34 @@ def allowed_file(filename):
 def index():
     return render_template('index.html')  # アップロードフォームの表示
 
-@app.route('/upload', methods=['POST'])
-def upload():
-    if request.method == 'POST':
-        if 'banana_image' not in request.files:
-            return redirect(request.url)  # ファイルが送信されていない場合、元のページにリダイレクト
+@app.route('/loading', methods=['POST'])
+def loading():
+    if 'banana_image' not in request.files:
+        return redirect(url_for('index'))
     
-        file = request.files['banana_image']
+    file = request.files['banana_image']
+    if file.filename == '' or not allowed_file(file.filename):
+        return "Invalid file format", 400
     
-        # ファイル名が適切でない場合
-        if file.filename == '':
-            return redirect(request.url)
-    
-        # ファイルが許可された形式か確認
-        if file and allowed_file(file.filename):
-            # ファイル名をセキュアにして保存
-            filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-            file.save(filename)
+    filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
+    file.save(filename)
+    return render_template('loading.html', filename=file.filename)
 
-            # 画像を読み込んで追熟度を計算
-            image = read_img(filename)  # read_imgで画像を読み込む
-            ripeness = banana_ripeness(image)  # 追熟度を計算
+@app.route('/result/<filename>')
+def result(filename):
+    if not filename:
+        return redirect(url_for('index'))
 
-            return render_template('result.html', ripeness=ripeness)  # 結果ページにリダイレクト
+    # アップロードされた画像のパスを作成
+    image_path = url_for('static', filename=f'upload/{filename}')
     
-        return '許可されていないファイル形式です。', 400  # 不正なファイル形式の場合
+    # 画像を読み込んで追熟度を計算
+    image = read_img(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    ripeness = banana_ripeness(image)
+
+    # result.html にアップロード画像と結果を渡す
+    return render_template('result.html', ripeness=ripeness, uploaded_image=image_path)
+
 
 if __name__ == '__main__':
-    serve(app, host='0.0.0.0', port=5000)
+    app.run(debug=True, host='0.0.0.0', port=5000)
