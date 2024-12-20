@@ -44,20 +44,20 @@ body {
 
 /* 見出しのスタイル */
 h2 {
-  margin-bottom: 10px;
+  margin: 10px;
   font-size: 28px;
   color: #333;
   text-align: center;
 }
 
 h3 {
-  margin-bottom: 20px;
-  font-size: 24px;
+  margin: 20px;
+  font-size: 22px;
   color: #555;
 }
 
 h4 {
-  margin-bottom: 20px;
+  margin: 20px;
   font-size: 32px;
   color: #000000;
 }
