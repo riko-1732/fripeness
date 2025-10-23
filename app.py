@@ -42,14 +42,16 @@ def result(filename):
         return redirect(url_for('index'))
 
     # アップロードされた画像のパスを作成
-    image_path = url_for('static', filename=f'upload/{filename}')
+    server_file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
     
     # 画像を読み込んで追熟度を計算
-    image = read_img(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+    image = read_img(server_file_path)
     ripeness = banana_ripeness(image)
+    
+    browser_image_url = url_for('static', filename=f'upload/{filename}')
 
     # result.html にアップロード画像と結果を渡す
-    return render_template('result.html', ripeness=ripeness, uploaded_image=image_path)
+    return render_template('result.html', ripeness=ripeness, uploaded_image=browser_image_url)
 
 
 if __name__ == '__main__':
