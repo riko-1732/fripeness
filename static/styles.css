@@ -53,7 +53,7 @@ body {
 h3 {
   margin: 20px;
   font-size: 22px;
-  color: #555;
+  color: #262626;
 }
 
 h4 {
@@ -64,8 +64,8 @@ h4 {
 
 .file-label {
   display: inline-block;
-  padding: 10px 20px;
-  background-color: #f0988ee5;
+  padding: 20px 40px;
+  background-color: #e96d60e5;
   color: white;
   font-size: 16px;
   border-radius: 5px;
@@ -85,7 +85,7 @@ h4 {
 }
 
 button {
-  padding: 10px 20px;
+  padding: 20px 40px;
   background-color: #af0303;
   color: white;
   font-size: 16px;
@@ -114,7 +114,7 @@ form {
   height: auto;
   display: block;
   margin: 10px auto;
-  border: 1px solid #ccc;
+  border: 10px solid #ccc;
 }
 
 #loading-screen {
