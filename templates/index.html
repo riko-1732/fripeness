@@ -21,7 +21,6 @@
     </h3>
 
     <form action="/loading" method="POST" enctype="multipart/form-data">
-      <!-- 実際のファイル選択ボタンを非表示にする -->
       <input
         type="file"
         name="banana_image"
@@ -31,29 +30,20 @@
         required
       />
 
-      <!-- カスタムボタン -->
       <label for="fileInput" class="file-label">Select Banana Image</label>
 
-      <div id="preview" style="margin: 20px 0; text-align: center">
-        <!-- プレビュー画像がここに表示される -->
-      </div>
+      <div id="preview" style="margin: 20px 0; text-align: center"></div>
 
       <button type="submit">Check Ripeness!</button>
     </form>
-
-    <!-- JavaScript -->
     <script src="../static/preview.jsx"></script>
-
-    <!-- JavaScript -->
     <script>
-      // フォーム送信時にローディング画面を表示してから実際にフォームを送信
       document
         .querySelector("#uploadForm")
         .addEventListener("submit", function (e) {
-          // e.preventDefault(); // デフォルトのフォーム送信を防止
-          window.location.href = "/templates/loading.html"; // 一時的にローディング画面に遷移
+          window.location.href = "/templates/loading.html";
           setTimeout(() => {
-            this.submit(); // 3秒後に実際のフォーム送信を実行
+            this.submit();
           }, 3000);
         });
     </script>
