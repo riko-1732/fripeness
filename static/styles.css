@@ -15,6 +15,7 @@ header {
 
 header img {
   max-height: 90%;
+  max-width: 80%;
   height: auto;
   display: block;
   margin: 0 auto;
@@ -112,9 +113,7 @@ form {
   max-width: 100%;
   max-height: 300px;
   height: auto;
-  display: block;
-  margin: 10px auto;
-  border: 10px solid #ccc;
+  outline: 3px solid #592d2d;
 }
 
 #loading-screen {
