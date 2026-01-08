@@ -159,3 +159,37 @@ form {
     width: 100%;
   }
 }
+
+/* ヘッダー全体のレイアウト */
+.site-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+/* ロゴ画像のサイズ制限 */
+.site-logo {
+  max-height: 60px;
+  width: auto; /* 比率を保つため */
+}
+
+/* 言語選択ボックスのスタイル */
+#languageSelector {
+  padding: 5px;
+  font-size: 16px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+}
+
+/* ファイル入力（input type="file"）を隠す設定 */
+#fileInput {
+  display: none;
+}
+
+/* プレビューエリア */
+#preview {
+  margin: 20px 0;
+  text-align: center;
+  min-height: 20px; /* 画像がない時もガタつきを防ぐ */
+}
