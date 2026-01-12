@@ -25,14 +25,10 @@
       </div>
     </header>
 
-    <h3 data-i18n="title">
-      Upload an image of a banana <br />
-      and the degree of ripeness <br />
-      will be displayed!
-    </h3>
+    <h3 data-i18n="description"></h3>
 
     <form
-      action="/loading"
+      action="/api/analyze"
       method="POST"
       enctype="multipart/form-data"
       id="uploadForm"
@@ -45,9 +41,9 @@
         required
       />
 
-      <label for="fileInput" class="file-label" data-i18n="label_select">
-        Select Banana Image
-      </label>
+      <label for="fileInput" class="file-label" data-i18n="file_select"
+        >Choose File</label
+      >
 
       <div id="preview"></div>
 
@@ -64,7 +60,9 @@
         <div class="loading-bar-container">
           <div class="loading-bar"></div>
         </div>
-        <p style="color: white; margin-top: 10px">Analyzing...</p>
+        <p style="color: white; margin-top: 10px" data-i18n="analyze">
+          Analyzing...
+        </p>
       </div>
     </div>
 

@@ -5,20 +5,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>fripeness</title>
     <link rel="stylesheet" href="../static/css/styles.css" type="text/css" />
-
-    <div class="lang-switch">
-      <select id="languageSelector" aria-label="Select Language">
-        <option value="en">English</option>
-        <option value="ja">日本語</option>
-      </select>
-    </div>
   </head>
 
   <body>
-    <header>
+    <header class="site-header">
       <a href="/">
-        <img src="../static/images/fripeness_logo.png" alt="logo" />
+        <img
+          src="/static/images/fripeness_logo.png"
+          alt="fripeness logo"
+          class="site-logo"
+        />
       </a>
+      <div class="lang-switch">
+        <select id="languageSelector" aria-label="Select Language">
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+        </select>
+      </div>
     </header>
 
     <!-- アップロードされた画像を表示 -->
@@ -26,10 +29,13 @@
       <img src="{{ uploaded_image }}" alt="Uploaded Banana Image" />
     </div>
 
-    <h3>The ripeness of this banana is...</h3>
+    <h3 data-i18n="result-msg">The ripeness of this banana is...</h3>
     <h4>{{ ripeness }}%</h4>
-    <button onclick="window.location.href='/'">Return</button>
+    <button onclick="window.location.href='/'" data-i18n="return">
+      Return
+    </button>
 
     <script src="../static/js/preview.js"></script>
+    <script src="../static/js/i18n.js"></script>
   </body>
 </html>

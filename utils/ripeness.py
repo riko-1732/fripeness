@@ -13,7 +13,6 @@ def read_img(image_path):
 # 画像を表示
 def display_img(window_name,image):
     # 画像表示用のウィンドウを作成して表示 
-    # ウインドウ名:window_name / 表示データ:image
     cv2.imshow(window_name, image)
     # キーが押されるまでウィンドウを保持
     cv2.waitKey(0)
@@ -57,25 +56,22 @@ def calc_HSV_average(hsv, non_white_mask):
 
 
 def sugar_spot(hsv, non_white_mask):
-    # 茶色の範囲を定義 (必要に応じて調整)
-    lower_brown = np.array([0, 0, 0])  # 茶色の下限 (Hue, Saturation, Value)
+    lower_brown = np.array([0, 0, 0])    # 茶色の下限 (Hue, Saturation, Value)
     upper_brown = np.array([25, 225, 127])  # 茶色の上限
     lower_brown2 = np.array([170, 0, 0])    # 紫側の茶色の下限
     upper_brown2 = np.array([179, 225, 127])    # 紫側の茶色の上限
-
-
+    
     # 茶色の部分をマスク
     mask1 = cv2.inRange(hsv, lower_brown, upper_brown)
     mask2 = cv2.inRange(hsv, lower_brown2, upper_brown2)
-    mask3 = cv2.bitwise_or(mask1, mask2) # 2つの茶色領域をORする
+    mask3 = cv2.bitwise_or(mask1, mask2)
 
-    # バナナ部分の面積計算
+    # マスク同士のAND演算
+    banana_brown_mask = cv2.bitwise_and(mask3, mask3, mask=non_white_mask)
+
     banana_area = np.sum(non_white_mask > 0)
+    brown_area = np.sum(banana_brown_mask > 0) # 修正箇所
 
-    # 面積を計算 (白いピクセル数を計算)
-    brown_area = np.sum(mask3 > 0)
-
-    # バナナ部分に対する茶色部分の割合計算
     if banana_area > 0:
         brown_ratio = (brown_area / banana_area) * 100
     else:
