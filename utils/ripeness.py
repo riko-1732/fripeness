@@ -46,7 +46,7 @@ def calc_HSV_average(hsv, non_white_mask):
         mean_h = 0  # 対象範囲がない場合
 
     # 0～100に正規化
-    min_h, max_h = 18, 35  # H値の最小値と最大値 
+    min_h, max_h = 10, 40  # H値の最小値と最大値 
     if (min_h <= mean_h <= max_h): 
         h_percentage = 100 - ((mean_h - min_h) / (max_h - min_h)) * 100
     else: h_percentage = 0
@@ -85,7 +85,7 @@ def banana_ripeness(image):
     h_percentage = calc_HSV_average(hsv, non_white_mask)
     brown_ratio = sugar_spot(hsv, non_white_mask)
 
-    ripeness = format((h_percentage + (brown_ratio * 0.4)), '.2f')
+    ripeness = format((h_percentage + (brown_ratio * 2.0)), '.2f')
     
     return ripeness
 
