@@ -4,48 +4,70 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>fripeness</title>
-    <link rel="stylesheet" href="../static/styles.css" type="text/css" />
+    <link rel="stylesheet" href="/static/css/styles.css" type="text/css" />
   </head>
 
   <body>
-    <header>
-      <a>
-        <img src="../static/fripeness_logo.png" alt="logo" />
+    <header class="site-header">
+      <a href="/">
+        <img
+          src="/static/images/fripeness_logo.png"
+          alt="fripeness logo"
+          class="site-logo"
+        />
       </a>
+
+      <div class="lang-switch">
+        <select id="languageSelector" aria-label="Select Language">
+          <option value="en">English</option>
+          <option value="ja">日本語</option>
+        </select>
+      </div>
     </header>
 
-    <h3>
-      Upload an image of a banana <br />
-      and the degree of ripeness <br />
-      will be displayed!
-    </h3>
+    <h3 data-i18n="description"></h3>
 
-    <form action="/loading" method="POST" enctype="multipart/form-data">
+    <form
+      action="/api/analyze"
+      method="POST"
+      enctype="multipart/form-data"
+      id="uploadForm"
+    >
       <input
         type="file"
         name="banana_image"
         accept="image/*"
         id="fileInput"
-        style="display: none"
         required
       />
 
-      <label for="fileInput" class="file-label">Select Banana Image</label>
+      <label for="fileInput" class="file-label" data-i18n="file_select"
+        >Choose File</label
+      >
 
-      <div id="preview" style="margin: 20px 0; text-align: center"></div>
+      <div id="preview"></div>
 
-      <button type="submit">Check Ripeness!</button>
+      <button type="submit" data-i18n="btn_submit">Check Ripeness!</button>
     </form>
-    <script src="../static/preview.jsx"></script>
-    <script>
-      document
-        .querySelector("#uploadForm")
-        .addEventListener("submit", function (e) {
-          window.location.href = "/templates/loading.html";
-          setTimeout(() => {
-            this.submit();
-          }, 3000);
-        });
-    </script>
+
+    <div id="loadingOverlay" class="overlay" style="display: none">
+      <div class="loading-content">
+        <img
+          src="/static/images/loading_banana.png"
+          alt="Loading"
+          class="loading-banana"
+        />
+        <div class="loading-bar-container">
+          <div class="loading-bar"></div>
+        </div>
+        <p style="color: white; margin-top: 10px" data-i18n="analyze">
+          Analyzing...
+        </p>
+      </div>
+    </div>
+
+    <script src="/static/js/preview.js"></script>
+    <script src="/static/js/i18n.js"></script>
+    <script src="/static/js/main.js"></script>
   </body>
 </html>

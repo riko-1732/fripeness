@@ -1,56 +1,78 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
 import os
-from utils.ripeness import read_img, banana_ripeness  # ripeness.pyから関数をインポート
+# utilsフォルダのripeness.pyから関数をインポート
+from utils.ripeness import read_img, banana_ripeness
 
 app = Flask(__name__)
 
-# アップロードされた画像の保存先ディレクトリ
-UPLOAD_FOLDER = os.path.join('static', 'upload')  # staticディレクトリ内のuploadフォルダ
+# --- 設定 ---
+UPLOAD_FOLDER = os.path.join('static', 'upload')
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
-# 保存先ディレクトリが存在しない場合は作成する
+# フォルダが存在しなければ作成
 if not os.path.exists(app.config['UPLOAD_FOLDER']):
     os.makedirs(app.config['UPLOAD_FOLDER'])
 
-# アップロードできるファイルの拡張子を設定
 ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
 
-# ファイル拡張子が許可されているか確認する関数
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def index():
-    return render_template('index.html')  # アップロードフォームの表示
+    return render_template('index.html')
 
-@app.route('/loading', methods=['POST'])
-def loading():
+# 画面遷移なしで画像をアップロードするためのAPI
+@app.route('/api/analyze', methods=['POST'])
+def analyze():
+    # 1. 画像ファイルの存在チェック
     if 'banana_image' not in request.files:
-        return redirect(url_for('index'))
+        return jsonify({'error': 'No file uploaded'}), 400
     
     file = request.files['banana_image']
-    if file.filename == '' or not allowed_file(file.filename):
-        return "Invalid file format", 400
     
-    filename = os.path.join(app.config['UPLOAD_FOLDER'], file.filename)
-    file.save(filename)
-    return render_template('loading.html', filename=file.filename)
+    if file.filename == '' or not allowed_file(file.filename):
+        return jsonify({'error': 'Invalid file'}), 400
+    
+    try:
+        # 2. 画像を保存
+        filename = file.filename
+        save_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        file.save(save_path)
 
+        # 3. 遷移先のURLを作成 (/result/ファイル名)
+        # ここではまだ計算せず、保存だけしてリダイレクト先を教えます
+        target_url = url_for('result', filename=filename)
+
+        # 4. JSONでURLを返す
+        return jsonify({
+            'status': 'success',
+            'redirect_url': target_url
+        })
+
+    except Exception as e:
+        print(f"Error: {e}")
+        return jsonify({'error': 'Analysis failed'}), 500
+
+# 結果表示ページ
 @app.route('/result/<filename>')
 def result(filename):
     if not filename:
         return redirect(url_for('index'))
 
-    # アップロードされた画像のパスを作成
+    # 画像のパス
     image_path = url_for('static', filename=f'upload/{filename}')
     
     # 画像を読み込んで追熟度を計算
-    image = read_img(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-    ripeness = banana_ripeness(image)
+    try:
+        full_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        image = read_img(full_path)
+        ripeness = banana_ripeness(image)
+    except Exception as e:
+        print(f"Calculation Error: {e}")
+        return redirect(url_for('index'))
 
-    # result.html にアップロード画像と結果を渡す
     return render_template('result.html', ripeness=ripeness, uploaded_image=image_path)
-
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)

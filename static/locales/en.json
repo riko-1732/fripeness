@@ -1,0 +1,10 @@
+{
+  "description": "Upload an image of a banana <br> and the degree of ripeness <br> will be displayed!",
+  "file_select": "Select Banana Image",
+  "btn_submit": "Check Ripeness!",
+
+  "analyze": "Analyzing...",
+
+  "result-msg": "The ripeness of this banana is...",
+  "return": "Return"
+}
